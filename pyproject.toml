@@ -1,6 +1,49 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "garmindb"
+description = "Download data from Garmin Connect and store it in a SQLite db for analysis."
+readme = "README.md"
+authors = [{name = "Tom Goetz"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "SQLAlchemy==2.0.40",
+    "python-dateutil==2.9.0.post0",
+    "cached-property==1.5.2",
+    "tqdm==4.66.5",
+    "garth==0.5.7",
+    "fitfile>=1.1.10",
+    "tcxfile>=1.0.4",
+    "idbutils>=1.1.0",
+    "tornado>=6.4.2",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "flake8==7.2.0",
+    "build==1.2.1",
+    "wheel==0.44.0",
+    "twine==6.1.0",
+]
+
+[project.scripts]
+garmindb_cli = "scripts.garmindb_cli:main"
+garmindb_checkup = "scripts.garmindb_checkup:main"
+garmindb_bug_report = "scripts.garmindb_bug_report:main"
+fitbit = "scripts.fitbit:main"
+mshealth = "scripts.mshealth:main"
+
+[project.urls]
+Homepage = "https://github.com/tcgoetz/GarminDB"
+"Bug Tracker" = "https://github.com/tcgoetz/GarminDB/issues"

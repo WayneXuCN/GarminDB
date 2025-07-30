@@ -125,29 +125,17 @@ republish_plugins:
 $(SUBMODULES:%=%-deps):
 	$(MAKE) -C $(subst -deps,,$@) deps
 
-requirements.txt:
-	$(PIP) freeze -r requirements.in > requirements.txt
-
-dev-requirements.txt:
-	$(PIP) freeze -r dev-requirements.in > dev-requirements.txt
-
-Jupyter/requirements.txt:
-	$(PIP) freeze -r Jupyter/requirements.in > Jupyter/requirements.txt
-
-Jupyter/requirements_graphs.txt:
-	$(PIP) freeze -r Jupyter/requirements_graphs.in > Jupyter/requirements_graphs.txt
-
 update_pip_packages:
-	$(PIP) list --outdated | egrep -v "Package|---" | cut -d' ' -f1 | xargs pip install --upgrade
+	uv pip list --outdated
 
 deps: $(SUBMODULES:%=%-deps)
-	$(PIP) install --upgrade --requirement requirements.txt
+	uv pip install -e .
 
 $(SUBMODULES:%=%-devdeps):
 	$(MAKE) -C $(subst -devdeps,,$@) devdeps
 
 devdeps: $(SUBMODULES:%=%-devdeps)
-	$(PIP) install --upgrade --requirement dev-requirements.txt
+	uv pip install -e .[dev]
 
 graphdeps:
 	$(PIP) install --upgrade --requirement Jupyter/requirements_graphs.txt
@@ -161,10 +149,7 @@ $(SUBMODULES:%=%-remove_deps):
 	$(MAKE) -C $(subst -remove_deps,,$@) remove_deps
 
 remove_deps: $(SUBMODULES:%=%-remove_deps)
-	$(PIP) uninstall -y --requirement requirements.txt
-	$(PIP) uninstall -y --requirement dev-requirements.txt
-	$(PIP) uninstall -y --requirement Jupyter/requirements.txt
-	$(PIP) uninstall -y --requirement Jupyter/requirements_graphs.txt
+	uv pip uninstall garmindb
 
 clean_deps: remove_deps
 

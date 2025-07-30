@@ -29,6 +29,8 @@ endif
 PYTHON3=python3
 # PIP3=$(shell which pip3)
 PIP3=pip3
+# UV=$(shell which uv)
+UV=uv
 
 PYTHON ?= $(PYTHON3)
 PIP ?= $(PIP3)
@@ -40,9 +42,12 @@ endif
 ifeq ($(PIP),)
 $(error pip not found)
 endif
+ifeq ($(UV),)
+$(error uv not found)
+endif
 
 PIP_PATH = $(shell which ${PIP})
 
 MODULE=garmindb
 
-export MODULE SHELL TIME PLATFORM PYTHON PIP FLAKE8
+export MODULE SHELL TIME PLATFORM PYTHON PIP UV FLAKE8
